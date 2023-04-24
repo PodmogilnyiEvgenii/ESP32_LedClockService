@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+   <head>
+      <meta charset="UTF-8" />
+      <title>LED clock service</title>
+      <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+   </head>
+   <body>
+      <h2 th:utext="${time}"></h2>
+
+      <table border="1">
+         <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Last message</th>
+         </tr>
+         <tr th:each ="device : ${devices}">
+            <th th:utext="${device.id}">...</th>
+            <th th:utext="${device.name}">...</th>
+            <th th:utext="${device.lastMessage}" align="left">...</th>
+         </tr>
+      </table>
+
+   </body>
+
+</html>
