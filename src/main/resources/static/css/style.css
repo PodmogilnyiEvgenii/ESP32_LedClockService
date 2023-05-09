@@ -1,0 +1,22 @@
+
+.table1 th {
+    padding-right: 20px;
+}
+
+.table2, .table2 th, .table2 tr {
+    border: 1px solid black;
+}
+
+.table2 th {
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8"/>
+    <title th:utext="${device.deviceId}">...</title>
+    <link rel="stylesheet" type="text/css" th:href="@{css/style.css}"/>
+</head>
+<body>
+<h2>
+    <table class="table1">
+        <tr>
+            <th><a href="/">MAIN</a></th>
+            <th><a href="/online">ONLINE</a></th>
+            <th><a href="/offline">OFFLINE</a></th>
+            <th><a href="/all">ALL</a></th>
+            <th><a href="/help">HELP</a></th>
+            <th th:utext="${time}"></th>
+        </tr>
+    </table>
+</h2>
+
+<h2 th:utext="${location}">LOCATION</h2>
+
+<div>
+    <table class="table2">
+        <tr bgcolor="#6495ed">
+            <th>Id</th>
+            <th>Name</th>
+            <th>Year</th>
+            <th>Month</th>
+            <th>Day</th>
+            <th>Hour</th>
+            <th>Minute</th>
+            <th>Second</th>
+            <th>Longitude</th>
+            <th>Latitude</th>
+        </tr>
+        <tr>
+            <th th:utext="${device.deviceId}">...</th>
+            <th th:utext="${device.name}">...</th>
+            <th th:utext="${device.year}">...</th>
+            <th th:utext="${device.month}">...</th>
+            <th th:utext="${device.day}">...</th>
+            <th th:utext="${device.hour}">...</th>
+            <th th:utext="${device.minute}">...</th>
+            <th th:utext="${device.second}">...</th>
+            <th th:utext="${device.longitude}">...</th>
+            <th th:utext="${device.latitude}">...</th>
+        </tr>
+        <tr>
+            <th colspan="10"></th>
+        </tr>
+
+        <tr bgcolor="#6495ed">
+            <th colspan="2">Description</th>
+            <th>Temperature (°C)</th>
+            <th>Pressure (mmHg.)</th>
+            <th>Humidity (%)</th>
+            <th>Wind speed (meter/sec)</th>
+            <th colspan="2">Last time get weather (sec)</th>
+            <th colspan="2">Save status</th>
+        </tr>
+        <tr>
+            <th colspan="2" th:utext="${device.descriptionWeather}">...</th>
+            <th th:utext="${device.temperature}">...</th>
+            <th th:utext="${device.pressure}">...</th>
+            <th th:utext="${device.humidity}">...</th>
+            <th th:utext="${device.windSpeed}">...</th>
+            <th colspan="2" th:utext="${device.lastTimeGetWeather}">...</th>
+            <th colspan="2" th:utext="${device.saveDataStatus}">...</th>
+
+        </tr>
+        <tr bgcolor="#6495ed">
+            <th colspan="10">Last 5 messages</th>
+        </tr>
+        <tr th:each="message : ${messages}">
+            <th colspan="10" align="left" th:utext="${message}">...</th>
+        </tr>
+    </table>
+</div>
+<h2><p></p></h2>
+</body>
+</html>

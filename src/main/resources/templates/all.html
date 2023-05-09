@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8"/>
+    <title>LED clock service</title>
+    <link rel="stylesheet" type="text/css" th:href="@{css/style.css}"/>
+</head>
+<body>
+<h2>
+    <table class="table1">
+        <tr>
+            <th><a href="/">MAIN</a></th>
+            <th><a href="/online">ONLINE</a></th>
+            <th><a href="/offline">OFFLINE</a></th>
+            <th><a href="/all">ALL</a></th>
+            <th><a href="/help">HELP</a></th>
+            <th th:utext="${time}"></th>
+        </tr>
+    </table>
+</h2>
+
+<h2 th:utext="${location}">LOCATION</h2>
+
+<div>
+    <table class="table2">
+        <tr>
+            <th>№</th>
+            <th>Id</th>
+            <th>Name</th>
+            <th></th>
+            <th>Status</th>
+            <th>Last message</th>
+        </tr>
+        <tr th:each="device : ${exdevices}">
+            <th th:utext="${device.id}">...</th>
+            <th th:utext="${device.deviceId}">...</th>
+            <th th:utext="${device.name}">...</th>
+            <th>
+                <a th:href="@{'/'+${device.deviceId}}">
+                    <button>SHOW</button>
+                </a>
+            </th>
+            <th th:utext="${device.status}">...</th>
+            <th align="left" th:utext="${device.lastMessage}">...</th>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>
