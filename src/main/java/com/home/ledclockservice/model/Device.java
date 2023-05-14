@@ -42,13 +42,12 @@ public class Device {
     @Column
     private int second;
 
-    @JsonProperty("lon")
-    @Column
-    private double longitude;
-
     @JsonProperty("lat")
     @Column
     private double latitude;
+    @JsonProperty("lon")
+    @Column
+    private double longitude;
 
     @JsonProperty("weather")
     @Column(name = "descriptionweather")

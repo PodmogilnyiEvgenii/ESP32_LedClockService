@@ -1,5 +1,6 @@
 package com.home.ledclockservice.controller;
 
+import com.home.ledclockservice.model.DeviceOptions;
 import com.home.ledclockservice.service.DAOServices;
 import com.home.ledclockservice.model.Device;
 import com.home.ledclockservice.service.DeviceServices;
@@ -13,16 +14,17 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class MQTTController {
-    private static MqttAsyncClient mqttClient;
+    private static MqttAsyncClient  mqttClient;
     private static DeviceServices deviceServices;
     private static DAOServices daoServices;
 
-   @Autowired
-   public MQTTController(MqttAsyncClient mqttClient, DeviceServices deviceServices, DAOServices daoServices) {
+    @Autowired
+    public MQTTController(MqttAsyncClient mqttClient, DeviceServices deviceServices, DAOServices daoServices) {
         MQTTController.mqttClient = mqttClient;
         MQTTController.deviceServices = deviceServices;
         MQTTController.daoServices = daoServices;
     }
+
     public static class CallBacks implements MqttCallbackExtended {
         private final String mqttTopic;
 
@@ -42,34 +44,52 @@ public class MQTTController {
         }
 
         private void parseMessage(String mqttMessage) {
-            Device device = deviceServices.getDeviceFromJson(mqttMessage);
-            if (device != null) {
-                daoServices.saveDevice(device);
-                Device lastDevice = daoServices.findLastDevice(device.getDeviceId());   //last dataId
-                UniqueDevice uniqueDevice = daoServices.findUniqueDevice(device.getDeviceId());
-                if (uniqueDevice != null) {
-                    uniqueDevice.setLastDataId(lastDevice.getDataId());
-                } else {
-                    uniqueDevice = new UniqueDevice();
-                    uniqueDevice.setDeviceId(lastDevice.getDeviceId());
-                    uniqueDevice.setName(lastDevice.getName());
-                    uniqueDevice.setLastDataId(lastDevice.getDataId());
-                }
-                daoServices.saveUniqueDevice(uniqueDevice);
-                if (!deviceServices.updateDevice(deviceServices.getOnlineDevices(), uniqueDevice))
-                    deviceServices.addDevice(deviceServices.getOnlineDevices(), uniqueDevice);
+            String messageType = deviceServices.getTypeMessage(mqttMessage);
+            if (messageType != null)
+                switch (messageType) {
+                    case "data":
+                        Device device = deviceServices.getDeviceFromJson(mqttMessage);
+                        if (device != null) {
+                            daoServices.saveDevice(device);
+                            Device lastDevice = daoServices.findLastDevice(device.getDeviceId());   //last dataId
+                            UniqueDevice uniqueDevice = daoServices.findUniqueDevice(device.getDeviceId());
+                            if (uniqueDevice != null) {
+                                uniqueDevice.setName(lastDevice.getName());
+                                uniqueDevice.setLastDataId(lastDevice.getDataId());
+                            } else {
+                                uniqueDevice = new UniqueDevice();
+                                uniqueDevice.setDeviceId(lastDevice.getDeviceId());
+                                uniqueDevice.setName(lastDevice.getName());
+                                uniqueDevice.setLastDataId(lastDevice.getDataId());
+                            }
+                            daoServices.saveUniqueDevice(uniqueDevice);
 
-                deviceServices.removeDevice(deviceServices.getOfflineDevices(), uniqueDevice);
-            }
+                            if (!deviceServices.updateDevice(deviceServices.getOnlineDevices(), uniqueDevice))
+                                deviceServices.addDevice(deviceServices.getOnlineDevices(), uniqueDevice);
+
+                            deviceServices.removeDevice(deviceServices.getOfflineDevices(), uniqueDevice);
+                        }
+                        break;
+
+                    case "set":
+                        //System.out.println("set message");
+                        break;
+
+                    case "get":
+                        //System.out.println("get message");
+                        break;
+
+                    case "options":
+                        deviceServices.saveDeviceOptions(deviceServices.getDeviceOptionsFromJson(mqttMessage));
+                        break;
+                }
+
+
         }
 
         @Override
         public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
-            try {
-                log.info("MQTT delivery message complete: {}", iMqttDeliveryToken.getMessage());
-            } catch (MqttException e) {
-                log.error("MQTT delivery fail: {}", e.getMessage());
-            }
+            log.info("MQTT delivery message complete");
         }
 
         @Override

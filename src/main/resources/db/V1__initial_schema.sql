@@ -3,7 +3,7 @@ CREATE SCHEMA IF NOT EXISTS clock;
 CREATE TABLE IF NOT EXISTS clock.rawdata
 (
     dataid                  SERIAL PRIMARY KEY,
-    deviceid                VARCHAR(10) NOT NULL,
+    deviceid                VARCHAR(16) NOT NULL,
 	name                    VARCHAR(30) NOT NULL,
     year                    INTEGER,
     month                   INTEGER,
@@ -11,8 +11,8 @@ CREATE TABLE IF NOT EXISTS clock.rawdata
     hour                    INTEGER,
     minute                  INTEGER,
     second                  INTEGER,
-    longitude               REAL,
     latitude                REAL,
+    longitude               REAL,
     descriptionweather      VARCHAR(30),
     temperature             REAL,
     pressure                INTEGER,
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS clock.rawdata
 create table if not exists clock.devices
 (
     id                      SERIAL PRIMARY KEY,
-    deviceid                VARCHAR(10) NOT NULL,
+    deviceid                VARCHAR(16) NOT NULL,
     name                    VARCHAR(30) NOT NULL,
 	lastdataid              INTEGER
 );

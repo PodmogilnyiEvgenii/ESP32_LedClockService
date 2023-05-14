@@ -20,65 +20,140 @@
     </table>
 </h2>
 
-<h2 th:utext="${location}">LOCATION</h2>
+<h3 th:utext="${location}">LOCATION</h3>
 
 <div>
     <table class="table2">
-        <tr bgcolor="#6495ed">
+        <tr class="tr1">
             <th>Id</th>
             <th>Name</th>
+        </tr>
+        <tr class="tr2">
+            <th th:utext="${device.deviceId}">...</th>
+            <th th:utext="${device.name}">...</th>
+        </tr>
+
+        <tr class="tr1">
             <th>Year</th>
             <th>Month</th>
             <th>Day</th>
             <th>Hour</th>
             <th>Minute</th>
             <th>Second</th>
-            <th>Longitude</th>
-            <th>Latitude</th>
         </tr>
-        <tr>
-            <th th:utext="${device.deviceId}">...</th>
-            <th th:utext="${device.name}">...</th>
+        <tr class="tr2">
             <th th:utext="${device.year}">...</th>
             <th th:utext="${device.month}">...</th>
             <th th:utext="${device.day}">...</th>
             <th th:utext="${device.hour}">...</th>
             <th th:utext="${device.minute}">...</th>
             <th th:utext="${device.second}">...</th>
-            <th th:utext="${device.longitude}">...</th>
-            <th th:utext="${device.latitude}">...</th>
-        </tr>
-        <tr>
-            <th colspan="10"></th>
         </tr>
 
-        <tr bgcolor="#6495ed">
-            <th colspan="2">Description</th>
+        <tr class="tr1">
+            <th>Latitude</th>
+            <th>Longitude</th>
+        </tr>
+        <tr class="tr2">
+            <th th:utext="${device.latitude}">...</th>
+            <th th:utext="${device.longitude}">...</th>
+        </tr>
+
+        <tr class="tr1">
+            <th>Description</th>
             <th>Temperature (°C)</th>
             <th>Pressure (mmHg.)</th>
             <th>Humidity (%)</th>
             <th>Wind speed (meter/sec)</th>
-            <th colspan="2">Last time get weather (sec)</th>
-            <th colspan="2">Save status</th>
         </tr>
-        <tr>
-            <th colspan="2" th:utext="${device.descriptionWeather}">...</th>
+        <tr class="tr2">
+            <th th:utext="${device.descriptionWeather}">...</th>
             <th th:utext="${device.temperature}">...</th>
             <th th:utext="${device.pressure}">...</th>
             <th th:utext="${device.humidity}">...</th>
             <th th:utext="${device.windSpeed}">...</th>
-            <th colspan="2" th:utext="${device.lastTimeGetWeather}">...</th>
-            <th colspan="2" th:utext="${device.saveDataStatus}">...</th>
+        </tr>
 
+        <tr class="tr1">
+            <th>Last time get weather (sec)</th>
+            <th>Save status</th>
         </tr>
-        <tr bgcolor="#6495ed">
-            <th colspan="10">Last 5 messages</th>
+        <tr class="tr2">
+            <th th:utext="${device.lastTimeGetWeather}">...</th>
+            <th th:utext="${device.saveDataStatus}">...</th>
         </tr>
-        <tr th:each="message : ${messages}">
-            <th colspan="10" align="left" th:utext="${message}">...</th>
+
+        <tr class="tr1">
+            <th colspan="6">Last 5 messages</th>
+        </tr>
+        <tr class="tr2" th:each="message : ${messages}">
+            <th colspan="6" align="left" th:utext="${message}">...</th>
         </tr>
     </table>
 </div>
-<h2><p></p></h2>
+
+<div>
+    <h3>PARAMETERS</h3>
+
+    <form action="#" th:action="@{/save}" th:object="${saveParameters}" method="POST">
+        <table class="table3">
+            <tr class="tr3">
+                <th>Id</th>
+                <th>Name</th>
+                <th colspan="2">AppID</th>
+                <th>NTP server</th>
+            </tr>
+            <tr class="tr4">
+
+                <th><input type="text" th:field="*{deviceId}" readonly></th>
+                <th><input type="text" th:field="*{name}"></th>
+                <th colspan="2"><input type="text" th:field="*{appid}" style="width:90%;" disabled></th>
+                <th><input type="text" th:field="*{ntpServer}" disabled></th>
+            </tr>
+
+            <tr class="tr3">
+                <th>Latitude</th>
+                <th>Longitude</th>
+            </tr>
+            <tr class="tr4">
+                <th><input type="text" th:field="*{latitude}"></th>
+                <th><input type="text" th:field="*{longitude}"></th>
+            </tr>
+
+            <tr class="tr3">
+                <th>dayBrightness</th>
+                <th>dayR</th>
+                <th>dayG</th>
+                <th>dayB</th>
+                <th>dayStart</th>
+            </tr>
+            <tr class="tr4">
+                <th><input type="text" th:field="*{dayBrightness}"></th>
+                <th><input type="text" th:field="*{dayR}"></th>
+                <th><input type="text" th:field="*{dayG}"></th>
+                <th><input type="text" th:field="*{dayB}"></th>
+                <th><input type="text" th:field="*{dayStart}"></th>
+            </tr>
+
+            <tr class="tr3">
+                <th>nightBrightness</th>
+                <th>nightR</th>
+                <th>nightG</th>
+                <th>nightB</th>
+                <th>nightStart</th>
+            </tr>
+            <tr class="tr4">
+                <th><input type="text" th:field="*{nightBrightness}"></th>
+                <th><input type="text" th:field="*{nightR}"></th>
+                <th><input type="text" th:field="*{nightG}"></th>
+                <th><input type="text" th:field="*{nightB}"></th>
+                <th><input type="text" th:field="*{nightStart}"></th>
+            </tr>
+        </table>
+        <h3>
+            <button type="submit" class="button1">Save device parameters</button>
+        </h3>
+    </form>
+</div>
 </body>
 </html>

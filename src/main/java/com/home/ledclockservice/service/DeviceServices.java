@@ -3,9 +3,7 @@ package com.home.ledclockservice.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.home.ledclockservice.dao.DeviceRepository;
-import com.home.ledclockservice.model.Device;
-import com.home.ledclockservice.model.UniqueDevice;
-import com.home.ledclockservice.model.UniqueDeviceForView;
+import com.home.ledclockservice.model.*;
 import com.home.ledclockservice.dao.UniqueDeviceRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.Data;
@@ -25,6 +23,8 @@ public class DeviceServices {
     private UniqueDeviceRepository uniqueDeviceRepository;
     private List<UniqueDevice> onlineDevices = new ArrayList<>();
     private List<UniqueDevice> offlineDevices = new ArrayList<>();
+
+    private List<DeviceOptions> devicesOptions = new ArrayList<>();
     private Timer timer = new Timer();
 
     @Autowired
@@ -85,15 +85,44 @@ public class DeviceServices {
         return false;
     }
 
-      public Device getDeviceFromJson(String jsonString) {
+    public boolean saveDeviceOptions(DeviceOptions deviceOptions) {
+        if (deviceOptions != null) {
+            return devicesOptions.add(deviceOptions);
+        } else return false;
+    }
+
+    public String getTypeMessage(String jsonString) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            DeviceDataType deviceDataType = objectMapper.readValue(jsonString, DeviceDataType.class);
+            if (deviceDataType.getDeviceId() == null || deviceDataType.getName() == null || deviceDataType.getType() == null)
+                throw new IllegalArgumentException();
+            //System.out.println(deviceDataType.getType());
+            return deviceDataType.getType();
+        } catch (JsonProcessingException | IllegalArgumentException e) {
+            log.debug("Wrong message type: {}", e.toString());
+            return null;
+        }
+    }
+
+    public Device getDeviceFromJson(String jsonString) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             Device device = objectMapper.readValue(jsonString, Device.class);
             device.setLastMessage(jsonString);
-            if (device.getDeviceId() == null || device.getName() == null) throw new IllegalArgumentException();
             return device;
+        } catch (JsonProcessingException e) {
+            log.debug("Device parse from JSON error: {}", e.toString());
+            return null;
+        }
+    }
 
-        } catch (JsonProcessingException | IllegalArgumentException e) {
+    public DeviceOptions getDeviceOptionsFromJson(String jsonString) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            DeviceOptions deviceOptions = objectMapper.readValue(jsonString, DeviceOptions.class);
+            return deviceOptions;
+        } catch (JsonProcessingException e) {
             log.debug("Device parse from JSON error: {}", e.toString());
             return null;
         }

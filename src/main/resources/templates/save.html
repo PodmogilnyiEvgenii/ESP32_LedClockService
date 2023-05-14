@@ -22,7 +22,9 @@
 
 <h3 th:utext="${location}">LOCATION</h3>
 
-Хелп
+<a th:href="@{'/'+${deviceId}}">
+    <button th:utext="${deviceId}" class="button1"></button>
+</a>
 
 </body>
 </html>
