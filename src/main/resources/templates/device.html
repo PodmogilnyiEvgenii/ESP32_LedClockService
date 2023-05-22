@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8"/>
-    <title th:utext="${device.deviceId}">...</title>
+    <title th:utext="${rawData.deviceId}">...</title>
     <link rel="stylesheet" type="text/css" th:href="@{css/style.css}"/>
 </head>
 <body>
@@ -29,8 +29,8 @@
             <th>Name</th>
         </tr>
         <tr class="tr2">
-            <th th:utext="${device.deviceId}">...</th>
-            <th th:utext="${device.name}">...</th>
+            <th th:utext="${rawData.deviceId}">...</th>
+            <th th:utext="${rawData.name}">...</th>
         </tr>
 
         <tr class="tr1">
@@ -42,12 +42,12 @@
             <th>Second</th>
         </tr>
         <tr class="tr2">
-            <th th:utext="${device.year}">...</th>
-            <th th:utext="${device.month}">...</th>
-            <th th:utext="${device.day}">...</th>
-            <th th:utext="${device.hour}">...</th>
-            <th th:utext="${device.minute}">...</th>
-            <th th:utext="${device.second}">...</th>
+            <th th:utext="${rawData.year}">...</th>
+            <th th:utext="${rawData.month}">...</th>
+            <th th:utext="${rawData.day}">...</th>
+            <th th:utext="${rawData.hour}">...</th>
+            <th th:utext="${rawData.minute}">...</th>
+            <th th:utext="${rawData.second}">...</th>
         </tr>
 
         <tr class="tr1">
@@ -55,8 +55,8 @@
             <th>Longitude</th>
         </tr>
         <tr class="tr2">
-            <th th:utext="${device.latitude}">...</th>
-            <th th:utext="${device.longitude}">...</th>
+            <th th:utext="${rawData.latitude}">...</th>
+            <th th:utext="${rawData.longitude}">...</th>
         </tr>
 
         <tr class="tr1">
@@ -67,11 +67,11 @@
             <th>Wind speed (meter/sec)</th>
         </tr>
         <tr class="tr2">
-            <th th:utext="${device.descriptionWeather}">...</th>
-            <th th:utext="${device.temperature}">...</th>
-            <th th:utext="${device.pressure}">...</th>
-            <th th:utext="${device.humidity}">...</th>
-            <th th:utext="${device.windSpeed}">...</th>
+            <th th:utext="${rawData.descriptionWeather}">...</th>
+            <th th:utext="${rawData.temperature}">...</th>
+            <th th:utext="${rawData.pressure}">...</th>
+            <th th:utext="${rawData.humidity}">...</th>
+            <th th:utext="${rawData.windSpeed}">...</th>
         </tr>
 
         <tr class="tr1">
@@ -79,8 +79,8 @@
             <th>Save status</th>
         </tr>
         <tr class="tr2">
-            <th th:utext="${device.lastTimeGetWeather}">...</th>
-            <th th:utext="${device.saveDataStatus}">...</th>
+            <th th:utext="${rawData.lastTimeGetWeather}">...</th>
+            <th th:utext="${rawData.saveDataStatus}">...</th>
         </tr>
 
         <tr class="tr1">
@@ -105,7 +105,7 @@
             </tr>
             <tr class="tr4">
 
-                <th><input type="text" th:field="*{deviceId}" readonly></th>
+                <th><input type="text" th:field="*{id}" readonly></th>
                 <th><input type="text" th:field="*{name}"></th>
                 <th colspan="2"><input type="text" th:field="*{appid}" style="width:90%;" disabled></th>
                 <th><input type="text" th:field="*{ntpServer}" disabled></th>
@@ -151,7 +151,7 @@
             </tr>
         </table>
         <h3>
-            <button type="submit" class="button1">Save device parameters</button>
+            <button type="submit" class="button1">Save rawData parameters</button>
         </h3>
     </form>
 </div>

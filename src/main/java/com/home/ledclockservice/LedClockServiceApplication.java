@@ -2,13 +2,13 @@ package com.home.ledclockservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
+@EnableScheduling
 @SpringBootApplication
-public class LedclockserviceApplication {
-
+public class LedClockServiceApplication {
 	public static void main(String[] args) {
-		SpringApplication.run(LedclockserviceApplication.class, args);
+		SpringApplication.run(LedClockServiceApplication.class, args);
 	}
 
 }

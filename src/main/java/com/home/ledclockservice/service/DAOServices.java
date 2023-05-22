@@ -1,46 +1,58 @@
 package com.home.ledclockservice.service;
 
+import com.home.ledclockservice.dao.RawDataRepository;
 import com.home.ledclockservice.dao.DeviceRepository;
-import com.home.ledclockservice.dao.UniqueDeviceRepository;
+import com.home.ledclockservice.model.RawData;
 import com.home.ledclockservice.model.Device;
-import com.home.ledclockservice.model.UniqueDevice;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+
 import java.util.List;
 
+@RequiredArgsConstructor
 @Configuration
 public class DAOServices {
+    private final RawDataRepository rawDataRepository;
     private final DeviceRepository deviceRepository;
-    private final UniqueDeviceRepository uniqueDeviceRepository;
 
-    @Autowired
-    public DAOServices(DeviceRepository deviceRepository, UniqueDeviceRepository uniqueDeviceRepository) {
-        this.deviceRepository = deviceRepository;
-        this.uniqueDeviceRepository = uniqueDeviceRepository;
+    public void saveDevice(RawData rawData) {
+        rawDataRepository.save(rawData);
     }
 
-    public void saveDevice(Device device) {
-        deviceRepository.save(device);
-    }
-
-    public Device findLastDevice(String deviceId) {
-        return deviceRepository.findFirstByDeviceIdOrderByDataIdDesc(deviceId);
+    public RawData findLastDevice(String deviceId) {
+        return rawDataRepository.findFirstByDeviceIdOrderByIdDesc(deviceId);
     }
 
     public List<String> find5LastMessages(String deviceId) {
-        return deviceRepository.findTop5ByDeviceIdOrderByDataIdDesc(deviceId).stream().map(Device::getLastMessage).toList();
+        return rawDataRepository.findTop5ByDeviceIdOrderByIdDesc(deviceId).stream().map(RawData::getLastMessage).toList();
     }
 
-    public UniqueDevice findUniqueDevice (String deviceId) {
-        return uniqueDeviceRepository.findFirstByDeviceId (deviceId);
+    public Device findUniqueDevice(String deviceId) {
+        return deviceRepository.findFirstByDeviceId(deviceId);
     }
 
-    public void saveUniqueDevice(UniqueDevice uniqueDevice) {
-        uniqueDeviceRepository.save(uniqueDevice);
+    public Device UpdateUniqueDevice(RawData rawData) {
+        RawData lastRawData = findLastDevice(rawData.getDeviceId());   //last dataId
+        Device device = findUniqueDevice(rawData.getDeviceId());
+
+        if (device == null) {
+            device = new Device();
+            device.setDeviceId(lastRawData.getDeviceId());
+        }
+
+        device.setName(lastRawData.getName());
+        device.setLastDataId(lastRawData.getId());
+
+        saveUniqueDevice(device);
+        return device;
+    }
+
+    public void saveUniqueDevice(Device device) {
+        deviceRepository.save(device);
     }
 
     public String findMessage(int dataId) {
-        return deviceRepository.findFirstByDataId(dataId).getLastMessage();
+        return rawDataRepository.findFirstById(dataId).getLastMessage();
     }
 }
 

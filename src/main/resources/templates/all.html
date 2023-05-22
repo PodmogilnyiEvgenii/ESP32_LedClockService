@@ -32,17 +32,17 @@
             <th>Status</th>
             <th>Last message</th>
         </tr>
-        <tr th:each="device : ${exdevices}">
-            <th th:utext="${device.id}">...</th>
-            <th th:utext="${device.deviceId}">...</th>
-            <th th:utext="${device.name}">...</th>
+        <tr th:each="rawData : ${devices}">
+            <th th:utext="${rawData.id}">...</th>
+            <th th:utext="${rawData.deviceId}">...</th>
+            <th th:utext="${rawData.name}">...</th>
             <th>
-                <a th:href="@{'/'+${device.deviceId}}">
+                <a th:href="@{'/'+${rawData.deviceId}}">
                     <button>SHOW</button>
                 </a>
             </th>
-            <th th:utext="${device.status}">...</th>
-            <th align="left" th:utext="${device.lastMessage}">...</th>
+            <th th:utext="${rawData.status}">...</th>
+            <th align="left" th:utext="${rawData.lastMessage}">...</th>
         </tr>
     </table>
 </div>

@@ -1,4 +1,4 @@
-package com.home.ledclockservice.model;
+package com.home.ledclockservice.dto;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -9,8 +9,7 @@ import lombok.Data;
 @JsonAutoDetect
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DeviceOptions {
-    @JsonProperty("id")
-    private String deviceId;
+    private String id;
     private String name;
     private String type;
 
