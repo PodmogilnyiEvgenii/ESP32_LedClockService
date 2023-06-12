@@ -40,7 +40,7 @@ public class WebView {
         return "index";
     }
 
-    @RequestMapping(value = {"/online"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/devices/online"}, method = RequestMethod.GET)
     public String online(Model model) {
         model.addAttribute("time", getTime());
         model.addAttribute("devices", deviceServices.getOnline());
@@ -48,7 +48,7 @@ public class WebView {
         return "all";
     }
 
-    @RequestMapping(value = {"/offline"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/devices/offline"}, method = RequestMethod.GET)
     public String offline(Model model) {
         model.addAttribute("time", getTime());
         model.addAttribute("devices", deviceServices.getOffline());
@@ -56,7 +56,7 @@ public class WebView {
         return "all";
     }
 
-    @RequestMapping(value = {"/all"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/devices/all"}, method = RequestMethod.GET)
     public String all(Model model) {
         model.addAttribute("time", getTime());
         model.addAttribute("devices", deviceServices.getAllDevice());
@@ -71,7 +71,7 @@ public class WebView {
         return "help";
     }
 
-    @RequestMapping(value = {"/{deviceId}"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/device/{deviceId}"}, method = RequestMethod.GET)
     public String device(@PathVariable("deviceId") String deviceId, Model model) {
         try {
             deviceServices.setDeviceOptions(null);
@@ -80,7 +80,6 @@ public class WebView {
             objectNode.put("id", deviceId);
             objectNode.put("type", "get");
             mqttController.publish(mqttConfiguration.getMqttTopic(), objectNode.toString(), 2, false);
-
             do {
                 Thread.sleep(100);
             } while (deviceServices.getDeviceOptions() == null);
@@ -97,7 +96,7 @@ public class WebView {
         return "device";
     }
 
-    @RequestMapping(value = {"/save"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/device/{deviceId}/save"}, method = RequestMethod.POST)
     public String save(@ModelAttribute("saveParameters") DeviceOptions saveDeviceOptions, Model model/*, BindingResult result*/) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
